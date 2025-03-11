@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>汉字防御 | Chinese Character Defense</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-950 text-gray-200 font-sans antialiased overflow-hidden">
+  <div id="game-container" class="relative w-full h-screen flex flex-col">
+    <!-- Game header -->
+    <header class="py-4 px-6 border-b border-gray-800/60 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-bold text-white tracking-tight">汉字防御</h1>
+        <div class="h-4 border-l border-gray-700/50"></div>
+        <span class="text-xs text-gray-400 font-geist-mono">v1.0</span>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400">时间</span>
+          <span id="time-counter" class="font-geist-mono text-white">00:00</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400">分数</span>
+          <span id="score-counter" class="font-geist-mono text-white">0</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400">失败</span>
+          <div class="flex items-center">
+            <span id="lives-counter" class="font-geist-mono text-white">0</span>
+            <span class="text-gray-600 mx-1">/</span>
+            <span class="font-geist-mono text-white">10</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Game arena -->
+    <div id="arena" class="relative flex-1 w-full max-w-6xl mx-auto">
+      <!-- Target zone in center -->
+      <div id="target-zone" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border border-gray-700/40 animate-pulse"></div>
+        <div class="absolute inset-2 rounded-full border border-gray-700/30"></div>
+        <div class="absolute inset-4 rounded-full border border-gray-700/20"></div>
+        <div class="absolute inset-6 rounded-full border border-gray-700/10"></div>
+        
+        <input 
+          id="input-field" 
+          type="text" 
+          class="w-32 h-12 bg-gray-900/80 backdrop-blur border border-gray-800/50 text-center rounded-md py-2 text-white focus:outline-none focus:ring-1 focus:ring-gray-700 font-geist-mono text-lg"
+          placeholder="输入文字..."
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        >
+      </div>
+    </div>
+
+    <!-- Game controls -->
+    <footer class="py-4 px-6 border-t border-gray-800/60">
+      <div class="flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-sm text-gray-400 flex items-center">
+          按
+          <kbd class="mx-1 px-2 py-0.5 bg-gray-800/50 text-gray-300 border border-gray-700/50 rounded text-xs font-geist-mono">Enter</kbd>
+          或
+          <kbd class="mx-1 px-2 py-0.5 bg-gray-800/50 text-gray-300 border border-gray-700/50 rounded text-xs font-geist-mono">Space</kbd>
+          提交
+        </div>
+        <button id="restart-button" class="flex items-center gap-2 px-4 py-2 rounded-md border border-gray-800/60 bg-gray-900/50 hover:bg-gray-800/80 transition-colors focus:outline-none">
+          <span class="text-sm">重新开始</span>
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </footer>
+
+    <!-- Game over overlay -->
+    <div id="game-over" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex-col items-center justify-center hidden">
+      <div class="bg-gray-900/80 p-8 rounded-lg border border-gray-800/60 max-w-md w-full mx-auto mt-24 backdrop-blur">
+        <h2 class="text-2xl font-bold text-center mb-6">游戏结束</h2>
+        
+        <div class="flex justify-between mb-4 pb-4 border-b border-gray-800/50">
+          <span class="text-gray-400">最终分数</span>
+          <span id="final-score" class="font-geist-mono text-xl"></span>
+        </div>
+        
+        <div class="flex justify-between mb-8 pb-4 border-b border-gray-800/50">
+          <span class="text-gray-400">坚持时间</span>
+          <span id="final-time" class="font-geist-mono text-xl"></span>
+        </div>
+        
+        <button id="play-again" class="w-full py-3 bg-gray-800/50 hover:bg-gray-700/70 rounded-md border border-gray-700/50 transition-colors focus:outline-none">
+          再来一局
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="wordbank.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Prevent zooming on the webpage
+    window.addEventListener("wheel", (e)=> {
+      const isPinching = e.ctrlKey
+      if(isPinching) e.preventDefault()
+    }, { passive: false })
+    
+    // Initialize icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
